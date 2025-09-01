@@ -21,27 +21,27 @@ import re
 
 import datasets
 
-from verl.utils.hdfs_io import copy, makedirs
+# from verl.utils.hdfs_io import copy, makedirs
 
 
 def extract_solution(solution_str):
-    solution = re.search("#### (\\-?[0-9\\.\\,]+)", solution_str)
+    solution = re.search("#### (\\-?[0-9\\.\\,]+)", solution_str)# 匹配符号，数字，小数点，逗号
     assert solution is not None
     final_solution = solution.group(0)
-    final_solution = final_solution.split("#### ")[1].replace(",", "")
+    final_solution = final_solution.split("#### ")[1].replace(",", "")# 去除逗号。逗号可能是千位分割符
     return final_solution
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--local_dir", default="~/data/gsm8k")
+    parser.add_argument("--local_dir", default="/Users/guoxing.lan/projects/datasets/math/gsm8k_for_ppo")
     parser.add_argument("--hdfs_dir", default=None)
 
     args = parser.parse_args()
 
-    data_source = "openai/gsm8k"
+    data_source = "/Users/guoxing.lan/projects/datasets/math/gsm8k_parquet"
 
-    dataset = datasets.load_dataset(data_source, "main")
+    dataset = datasets.load_dataset(data_source)
 
     train_dataset = dataset["train"]
     test_dataset = dataset["test"]
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     train_dataset.to_parquet(os.path.join(local_dir, "train.parquet"))
     test_dataset.to_parquet(os.path.join(local_dir, "test.parquet"))
 
-    if hdfs_dir is not None:
-        makedirs(hdfs_dir)
-
-        copy(src=local_dir, dst=hdfs_dir)
+    # if hdfs_dir is not None:
+    #     makedirs(hdfs_dir)
+    #
+    #     copy(src=local_dir, dst=hdfs_dir)
