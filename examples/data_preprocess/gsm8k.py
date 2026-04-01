@@ -42,7 +42,7 @@ if __name__ == "__main__":
     data_source = "/Users/guoxing.lan/projects/datasets/math/gsm8k_parquet"
 
     dataset = datasets.load_dataset(data_source)
-
+    # column_names: ['question', 'answer']
     train_dataset = dataset["train"]
     test_dataset = dataset["test"]
 
