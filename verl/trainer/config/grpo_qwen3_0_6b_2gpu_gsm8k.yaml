@@ -1,0 +1,153 @@
+# Compose from the standard PPO trainer config, then override for GRPO.
+defaults:
+  - ppo_trainer
+  - _self_
+
+
+# dataset config
+data:
+
+  # Training set parquet. Can be a list or a single file.
+  train_files: ~/data/gsm8k/train.parquet
+
+  # Validation parquet. Can be a list or a single file.
+  val_files: ~/data/gsm8k/test.parquet
+
+  # Batch size sampled for one training iteration of different RL algorithms.
+  train_batch_size: 1024
+
+  # Maximum prompt length. All prompts will be left-padded to this length.
+  max_prompt_length: 512
+
+  # Maximum response length. Rollout in RL algorithms (e.g. PPO) generates up to this length.
+  max_response_length: 1024
+
+  # Whether to filter overlong prompts.
+  filter_overlong_prompts: True
+
+  # Truncate the input_ids or prompt if they exceed max_prompt_length.
+  truncation: error
+
+
+# config for actor, rollout and reference model
+actor_rollout_ref:
+
+  # common configs for the model
+  model:
+
+    # Huggingface model path. This can be either local path or HDFS path.
+    path: Qwen/Qwen3-0.6B
+
+    # Whether to use remove padding.
+    use_remove_padding: True
+
+    # Enable gradient checkpointing for actor
+    enable_gradient_checkpointing: True
+
+  # configs for the actor
+  actor:
+
+    # Policy optimization learning rate.
+    optim:
+
+      # Learning rate.
+      lr: 1e-6
+
+    # Mini batch size used in PPO update (or GRPO-style update).
+    ppo_mini_batch_size: 256
+
+    # Micro batch size per GPU used in PPO update (or GRPO-style update).
+    ppo_micro_batch_size_per_gpu: 32
+
+    # Whether to add KL loss during policy update.
+    use_kl_loss: True
+
+    # Coefficient for KL loss.
+    kl_loss_coef: 0.001
+
+    # KL loss type.
+    kl_loss_type: low_var_kl
+
+    # Entropy coefficient.
+    entropy_coeff: 0
+
+    # FSDP configs
+    fsdp_config:
+
+      # Whether to offload params to CPU.
+      param_offload: False
+
+      # Whether to offload optimizer states to CPU.
+      optimizer_offload: False
+
+  # configs for the rollout engine
+  rollout:
+
+    # Rollout backend name.
+    name: vllm
+
+    # Tensor model parallel size used by rollout backend.
+    tensor_model_parallel_size: 2
+
+    # VLLM GPU memory utilization.
+    gpu_memory_utilization: 0.6
+
+    # Number of sampled responses per prompt.
+    n: 5
+
+    # Micro batch size per GPU used when computing logprobs in rollout backend.
+    log_prob_micro_batch_size_per_gpu: 32
+
+  # configs for the reference model
+  ref:
+
+    # Micro batch size per GPU used when computing logprobs for reference model.
+    log_prob_micro_batch_size_per_gpu: 32
+
+    # FSDP configs
+    fsdp_config:
+
+      # Whether to offload params to CPU.
+      param_offload: True
+
+
+# config for the algorithm
+algorithm:
+
+  # Advantage estimator type: "gae", "grpo", "reinforce_plus_plus", etc.
+  adv_estimator: grpo
+
+  # Whether to enable in-reward KL penalty
+  use_kl_in_reward: False
+
+
+# config for the trainer
+trainer:
+
+  # Number of nodes used in the training
+  nnodes: 1
+
+  # Number of GPUs per node
+  n_gpus_per_node: 2
+
+  # Number of iterations to warm up the critic before updating policy
+  critic_warmup: 0
+
+  # Project name for experiment tracking (e.g., wandb)
+  project_name: verl_grpo_example_gsm8k
+
+  # Experiment name for run identification in tracking tools
+  experiment_name: qwen3_0_6b_function_rm_2gpu
+
+  # Logging backends to use: "console", "wandb", etc.
+  logger: [ 'console', 'wandb' ]
+
+  # Save frequency (by iteration) for model checkpoints
+  save_freq: 20
+
+  # Validation frequency (in training iterations)
+  test_freq: 5
+
+  # Number of epochs in training
+  total_epochs: 15
+

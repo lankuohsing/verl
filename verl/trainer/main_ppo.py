@@ -27,7 +27,7 @@ from verl.trainer.ppo.reward import load_reward_manager
 
 
 @hydra.main(config_path="config", config_name="ppo_trainer", version_base=None)
-def main(config):
+def main(config): # config/ppo_trainer.yaml
     run_ppo(config)
 
 
