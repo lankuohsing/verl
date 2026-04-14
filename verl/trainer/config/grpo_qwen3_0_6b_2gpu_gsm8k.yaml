@@ -4,14 +4,21 @@ defaults:
   - _self_
 
 
+# path constants
+paths:
+
+  # Prefix directory for your local experiment workspace.
+  home_dir: /gpu-nas/experiment_workspace/languoxing
+
+
 # dataset config
 data:
 
   # Training set parquet. Can be a list or a single file.
-  train_files: ~/data/gsm8k/train.parquet
+  train_files: ${paths.home_dir}/data/gsm8k/train.parquet
 
   # Validation parquet. Can be a list or a single file.
-  val_files: ~/data/gsm8k/test.parquet
+  val_files: ${paths.home_dir}/data/gsm8k/test.parquet
 
   # Batch size sampled for one training iteration of different RL algorithms.
   train_batch_size: 1024
@@ -150,4 +157,7 @@ trainer:
 
   # Number of epochs in training
   total_epochs: 15
+
+  # Default local directory for saving checkpoints
+  default_local_dir: ${paths.home_dir}/checkpoints/${trainer.project_name}/${trainer.experiment_name}
 
