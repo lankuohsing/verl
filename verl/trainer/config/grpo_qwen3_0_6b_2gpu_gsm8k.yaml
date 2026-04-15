@@ -43,7 +43,7 @@ actor_rollout_ref:
   model:
 
     # Huggingface model path. This can be either local path or HDFS path.
-    path: Qwen/Qwen3-0.6B
+    path: /gpu-nas/experiment_workspace/languoxing/models/Qwen3-0.6B
 
     # Whether to use remove padding.
     use_remove_padding: True
