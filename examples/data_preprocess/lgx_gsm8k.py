@@ -34,12 +34,12 @@ def extract_solution(solution_str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--local_dir", default="/Users/guoxing.lan/projects/datasets/math/gsm8k_for_ppo")
+    parser.add_argument("--local_dir", default="/gpu-nas/experiment_workspace/languoxing/datasets/grpo/gsm8k_verl_ppo")
     parser.add_argument("--hdfs_dir", default=None)
 
     args = parser.parse_args()
 
-    data_source = "/Users/guoxing.lan/projects/datasets/math/gsm8k_parquet"
+    data_source = "/gpu-nas/experiment_workspace/languoxing/datasets/grpo/gsm8k_parquet"
 
     dataset = datasets.load_dataset(data_source)
     # column_names: ['question', 'answer']

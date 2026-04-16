@@ -15,10 +15,10 @@ paths:
 data:
 
   # Training set parquet. Can be a list or a single file.
-  train_files: ${paths.home_dir}/datasets/grpo/gsm8k/train.parquet
-
+  # train_files: ${paths.home_dir}/datasets/grpo/gsm8k/train.parquet
+  train_files: ${paths.home_dir}/datasets/grpo/gsm8k_verl_ppo/train.parquet
   # Validation parquet. Can be a list or a single file.
-  val_files: ${paths.home_dir}/datasets/grpo/gsm8k/test.parquet
+  val_files: ${paths.home_dir}/datasets/grpo/gsm8k_verl_ppo/test.parquet
 
   # Batch size sampled for one training iteration of different RL algorithms.
   train_batch_size: 1024
