@@ -26,18 +26,25 @@ echo "TENSORBOARD_DIR: $TENSORBOARD_DIR"
 
 
 # 2. 连接到 Ray 集群的 Head 节点
+# RAY_ADDRESS：Ray 集群的 dashboard 地址（8265 是 Ray 默认 dashboard 端口）
+# MLP_HEAD_0_HOST：平台拉起的 Ray Head 节点主机名
+
+echo "MLP_HEAD_0_HOST: $MLP_HEAD_0_HOST"
 export RAY_ADDRESS="http://${MLP_HEAD_0_HOST}:8265" # The Ray cluster address to connect to
 # 3. 记录当前目录（要打包上传的代码目录）
 export WORKING_DIR="${PWD}" # The local directory to package to the Ray cluster
 # 选择使用哪个 runtime_env.yaml
+# RUNTIME_ENV作用：指定 Ray runtime env 配置（依赖、环境变量等），让集群 worker 按这个环境运行。
 RUNTIME_ENV="verl/trainer/runtime_env.yaml"
 # 或者如果你用的是 DAPO 相关的：
 # RUNTIME_ENV="recipe/dapo/runtime_env.yaml"
-# 4. 修改 runtime_env.yaml，注入环境变量
+# 4. 修改 runtime_env.yaml，动态注入环境变量
 # 动态注入 TENSORBOARD_DIR（如果已存在则先删除旧的）
+# sed [选项] '脚本命令' 文件；d 删除、a 追加、i 插入、s 替换 等
 sed -i '/TENSORBOARD_DIR/d' "${RUNTIME_ENV}"
 sed -i "/env_vars:/a \  TENSORBOARD_DIR: \"${TENSORBOARD_DIR}\"" "${RUNTIME_ENV}"
-
+# 直接修改仓库里的 runtime_env.yaml，会导致多人共用仓库/同机并发跑多个实验时互相覆盖；
+# 更稳的做法通常是：为每次任务生成一个临时 runtime env 文件（带 timestamp），提交时用那个文件。
 
 experiment_name=${project_name}
 # 标准输出日志目录：按任务 ID 隔离日志。
