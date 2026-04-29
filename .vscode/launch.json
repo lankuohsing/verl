@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "verl: main_ppo (module)",
+        "type": "python",
+        "request": "launch",
+        "module": "verl.trainer.main_ppo",
+        "args": ["--config-name", "grpo_qwen3_0_6b_2gpu_gsm8k"],
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}",
+          "VERL_DEBUGPY": "1",
+          "TENSORBOARD_DIR": "/gpu-nas/rlhf_group/tensorboard/languoxing/${workspaceFolderBasename}"
+        },
+        "console": "integratedTerminal",
+        "justMyCode": false
+      },
+      {
+        "name": "verl: attach Ray worker (debugpy :5678)",
+        "type": "python",
+        "request": "attach",
+        "connect": {
+          "host": "127.0.0.1",
+          "port": 5678
+        },
+        "justMyCode": false
+      }
+    ]
+  }

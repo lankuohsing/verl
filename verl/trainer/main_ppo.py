@@ -63,6 +63,12 @@ def run_ppo(config) -> None:
 @ray.remote(num_cpus=1)  # please make sure main_task is not scheduled on head
 class TaskRunner:
     def run(self, config):
+        if os.environ.get("VERL_DEBUGPY", "0") == "1":
+            import debugpy
+            debugpy.listen(("127.0.0.1", 5678))
+            print("debugpy listening on 5678, waiting for attach...")
+            debugpy.wait_for_client()
+            debugpy.breakpoint()
         # Print the initial configuration. `resolve=True` will evaluate symbolic values.
         from pprint import pprint
 

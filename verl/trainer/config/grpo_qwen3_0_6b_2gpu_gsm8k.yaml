@@ -150,7 +150,7 @@ trainer:
   logger: [ 'console', 'tensorboard' ]
 
   # Save frequency (by iteration) for model checkpoints
-  save_freq: 20
+  save_freq: 1
 
   # Validation frequency (in training iterations)
   test_freq: 5
