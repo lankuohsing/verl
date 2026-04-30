@@ -12,7 +12,7 @@ echo "NODE_RANK: $NODE_RANK"
 timestamp=$(date +"%Y_%m_%d_%H_%M_%S")
 home_dir="/gpu-nas/experiment_workspace/languoxing"
 
-project_name='qwen3_8b_gsm8k_grpo'
+project_name='qwen3_0_6b_gsm8k_grpo'
 experiment_name=${project_name}
 # 1. 设置 TensorBoard 日志目录：
 # 如果平台提供了 TENSORBOARD_LOG_PATH 环境变量（非空），就用它
