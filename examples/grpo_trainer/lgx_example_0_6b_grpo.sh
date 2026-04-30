@@ -50,8 +50,8 @@ export SAVE_PATH="${home_dir}/outputs/${experiment_name}"
 [ -d $TENSORBOARD_DIR ] || mkdir -p $TENSORBOARD_DIR
 [ -d $SAVE_PATH ] || mkdir -p $SAVE_PATH
 data_dir="${home_dir}/datasets/grpo/gsm8k_verl_ppo/"
-model_path="/gpu-nas/experiment_workspace/languoxing/models/Qwen3-8B"
-# model_path="/gpu-nas/experiment_workspace/languoxing/models/Qwen3-0.6B"
+# model_path="/gpu-nas/experiment_workspace/languoxing/models/Qwen3-8B"
+model_path="/gpu-nas/experiment_workspace/languoxing/models/Qwen3-0.6B"
 # 5. 提交任务到 Ray 集群
 ray job submit \
     --runtime-env="${RUNTIME_ENV}" \
