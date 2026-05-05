@@ -2,8 +2,21 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "Python: 当前文件（当前脚本）",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${file}",
+        "cwd": "${workspaceFolder}",
+        "console": "integratedTerminal",
+        "justMyCode": false,
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}"
+        }
+      },
+
+      {
         "name": "verl: main_ppo (module)",
-        "type": "python",
+        "type": "debugpy",
         "request": "launch",
         "module": "verl.trainer.main_ppo",
         "args": ["--config-name", "grpo_qwen3_0_6b_2gpu_gsm8k"],
@@ -18,7 +31,7 @@
       },
       {
         "name": "verl: attach Ray worker (debugpy :5678)",
-        "type": "python",
+        "type": "debugpy",
         "request": "attach",
         "connect": {
           "host": "127.0.0.1",
