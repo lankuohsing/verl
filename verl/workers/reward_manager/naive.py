@@ -61,10 +61,10 @@ class NaiveRewardManager:
             prompt_ids = data_item.batch["prompts"]
 
             prompt_length = prompt_ids.shape[-1]
-
+            # 输入prompt：左padding
             valid_prompt_length = data_item.batch["attention_mask"][:prompt_length].sum()
             valid_prompt_ids = prompt_ids[-valid_prompt_length:]
-
+            # 输出答案，右padding
             response_ids = data_item.batch["responses"]
             valid_response_length = data_item.batch["attention_mask"][prompt_length:].sum()
             valid_response_ids = response_ids[:valid_response_length]
@@ -91,7 +91,7 @@ class NaiveRewardManager:
                     reward_extra_info[key].append(value)
             else:
                 reward = score
-
+            # 只给最后一个token奖励值
             reward_tensor[i, valid_response_length - 1] = reward
 
             if data_source not in already_print_data_sources:

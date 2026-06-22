@@ -144,7 +144,7 @@ trainer:
   project_name: verl_grpo_example_gsm8k
 
   # Experiment name for run identification in tracking tools
-  experiment_name: qwen3_0_6b_function_rm_2gpu_0429_01
+  experiment_name: qwen3_0_6b_function_rm_2gpu_0516_01
 
   # Logging backends to use: "console", "wandb", etc.
   logger: [ 'console', 'tensorboard' ]
